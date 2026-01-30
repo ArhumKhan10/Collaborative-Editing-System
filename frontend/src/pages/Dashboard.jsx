@@ -57,6 +57,13 @@ const Dashboard = () => {
     loadDocuments()
   }, [])
 
+  // Strip HTML tags from content for preview
+  const stripHtml = (html) => {
+    const tmp = document.createElement('DIV')
+    tmp.innerHTML = html
+    return tmp.textContent || tmp.innerText || ''
+  }
+
   const loadDocuments = async () => {
     try {
       setLoading(true)
@@ -321,7 +328,7 @@ const Dashboard = () => {
                           minHeight: '2.5em',
                         }}
                       >
-                        {doc.content || 'No content yet'}
+                        {stripHtml(doc.content || 'No content yet')}
                       </Typography>
 
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
