@@ -1,0 +1,12 @@
+# Common library configuration
+jwt:
+  secret: collab-edit-secret-key-must-be-at-least-256-bits-for-HS256-algorithm
+  expiration: 86400000  # 24 hours in milliseconds
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - [%thread] - %-5level - %logger{36} - %msg%n"
+  level:
+    com.collab: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO

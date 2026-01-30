@@ -1,0 +1,45 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: document-service
+  
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/collab_edit_db?maxPoolSize=50&minPoolSize=10
+      database: collab_edit_db
+
+# JWT Configuration (MUST match across all services)
+jwt:
+  secret: collab-edit-secret-key-must-be-at-least-256-bits-for-HS256-algorithm
+  expiration: 86400000  # 24 hours
+
+# Swagger/OpenAPI
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# Logging
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - [DOCUMENT-SERVICE] - %-5level - %logger{36} - %msg%n"
+  level:
+    com.collab: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.data.mongodb: INFO
+    org.springframework.messaging: DEBUG
