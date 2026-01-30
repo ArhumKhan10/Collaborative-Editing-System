@@ -12,5 +12,9 @@ export default defineConfig({
         changeOrigin: true,
       }
     }
+  },
+  define: {
+    // Fix for SockJS: polyfill global variable
+    global: 'globalThis',
   }
 })

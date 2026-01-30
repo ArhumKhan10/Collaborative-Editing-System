@@ -10,7 +10,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document as MongoDocument;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@MongoDocument(collection = "documents")
+@org.springframework.data.mongodb.core.mapping.Document(collection = "documents")
 public class Document {
 
     @Id

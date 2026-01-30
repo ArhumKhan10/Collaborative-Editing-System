@@ -18,14 +18,7 @@ public class SecurityConfig {
             .sessionManagement(session -> 
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/swagger-ui/**",
-                    "/swagger-ui.html",
-                    "/api-docs/**",
-                    "/v3/api-docs/**",
-                    "/actuator/**"
-                ).permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()  // Allow all requests for demo
             );
         
         return http.build();

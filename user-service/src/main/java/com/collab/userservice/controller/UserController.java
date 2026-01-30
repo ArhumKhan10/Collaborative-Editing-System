@@ -106,4 +106,16 @@ public class UserController {
         boolean exists = userService.existsByUsername(username);
         return ResponseEntity.ok(ApiResponse.success(exists));
     }
+
+    @GetMapping("/exists/{email}")
+    @Operation(summary = "Get user by email", description = "Get user details by email address")
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "User found"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "User not found")
+    })
+    public ResponseEntity<ApiResponse<UserDTO>> getUserByEmail(@PathVariable String email) {
+        log.info("GET /api/users/exists/{}", email);
+        UserDTO user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(ApiResponse.success(user));
+    }
 }

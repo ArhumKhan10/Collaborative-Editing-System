@@ -19,6 +19,7 @@ public class DocumentMessage {
     private String userId;
     private String username;
     private String content;
+    private String permission; // "edit" or "view"
     private Integer cursorPosition;
     private LocalDateTime timestamp;
 
@@ -29,18 +30,20 @@ public class DocumentMessage {
             userId,
             username,
             content,
+            "edit", // editors can change content
             null,
             LocalDateTime.now()
         );
     }
 
-    public static DocumentMessage userJoined(String documentId, String userId, String username) {
+    public static DocumentMessage userJoined(String documentId, String userId, String username, String permission) {
         return new DocumentMessage(
             "user-joined",
             documentId,
             userId,
             username,
             null,
+            permission != null ? permission : "edit",
             null,
             LocalDateTime.now()
         );
@@ -52,6 +55,7 @@ public class DocumentMessage {
             documentId,
             userId,
             username,
+            null,
             null,
             null,
             LocalDateTime.now()

@@ -8,9 +8,9 @@ import reactor.core.publisher.Mono;
 
 @Component
 @Slf4j
-public class RequestLoggerFilter extends AbstractGatewayFilterFactory<RequestLoggerFilter.Config> {
+public class RequestLoggerGatewayFilterFactory extends AbstractGatewayFilterFactory<RequestLoggerGatewayFilterFactory.Config> {
 
-    public RequestLoggerFilter() {
+    public RequestLoggerGatewayFilterFactory() {
         super(Config.class);
     }
 

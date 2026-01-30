@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import SockJS from 'sockjs-client'
 import { Client } from '@stomp/stompjs'
 
-export const useWebSocket = (documentId, userId, username, onMessage) => {
+export const useWebSocket = (documentId, userId, username, onMessage, permission = 'edit') => {
   const [connected, setConnected] = useState(false)
   const clientRef = useRef(null)
 
@@ -33,13 +33,14 @@ export const useWebSocket = (documentId, userId, username, onMessage) => {
         onMessage(data)
       })
 
-      // Send join message
+      // Send join message with permission
       stompClient.publish({
         destination: `/app/document/${documentId}/join`,
         body: JSON.stringify({
           documentId,
           userId,
           username,
+          permission,
         }),
       })
     }
@@ -76,7 +77,7 @@ export const useWebSocket = (documentId, userId, username, onMessage) => {
         clientRef.current.deactivate()
       }
     }
-  }, [documentId, userId, username, onMessage])
+  }, [documentId, userId, username, onMessage, permission])
 
   const sendMessage = useCallback((content) => {
     if (clientRef.current && clientRef.current.connected) {

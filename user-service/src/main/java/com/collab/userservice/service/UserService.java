@@ -159,4 +159,14 @@ public class UserService {
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
+
+    /**
+     * Get user by email
+     */
+    public UserDTO getUserByEmail(String email) {
+        log.info("Getting user by email: {}", email);
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
+        return UserDTO.fromUser(user);
+    }
 }

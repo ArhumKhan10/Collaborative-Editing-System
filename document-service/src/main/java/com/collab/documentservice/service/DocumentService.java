@@ -96,9 +96,14 @@ public class DocumentService {
         Document document = documentRepository.findById(new ObjectId(documentId))
             .orElseThrow(() -> new ResourceNotFoundException("Document", "id", documentId));
 
-        // Only owner can share
-        if (!document.getOwnerId().equals(new ObjectId(requesterId))) {
-            throw new UnauthorizedException("Only document owner can share");
+        // Check if requester has permission to share (owner or collaborator with edit permission)
+        ObjectId requesterObjectId = new ObjectId(requesterId);
+        boolean isOwner = document.getOwnerId().equals(requesterObjectId);
+        boolean hasEditPermission = document.getCollaborators().stream()
+            .anyMatch(c -> c.getUserId().equals(requesterObjectId) && "edit".equals(c.getPermission()));
+        
+        if (!isOwner && !hasEditPermission) {
+            throw new UnauthorizedException("Only document owner or editors can share");
         }
 
         ObjectId newCollaboratorId = new ObjectId(request.getUserId());

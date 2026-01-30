@@ -16,10 +16,20 @@
     <description>API Gateway for routing requests to microservices</description>
 
     <dependencies>
-        <!-- Common Library -->
+        <!-- Common Library (exclude web starter - Gateway is reactive) -->
         <dependency>
             <groupId>com.collab</groupId>
             <artifactId>common-lib</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Spring Cloud Gateway -->

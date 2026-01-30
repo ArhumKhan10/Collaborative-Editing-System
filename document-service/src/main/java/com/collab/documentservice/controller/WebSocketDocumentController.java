@@ -46,14 +46,16 @@ public class WebSocketDocumentController {
             @DestinationVariable String documentId,
             @Payload DocumentMessage message) {
         
-        log.info("User joined - document: {}, user: {} ({})", 
-            documentId, message.getUserId(), message.getUsername());
+        String permission = message.getPermission() != null ? message.getPermission() : "edit";
+        log.info("User joined - document: {}, user: {} ({}), permission: {}", 
+            documentId, message.getUserId(), message.getUsername(), permission);
 
         String destination = "/topic/document/" + documentId;
         DocumentMessage joinMessage = DocumentMessage.userJoined(
             documentId,
             message.getUserId(),
-            message.getUsername()
+            message.getUsername(),
+            permission
         );
         messagingTemplate.convertAndSend(destination, joinMessage);
     }
