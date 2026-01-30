@@ -47,13 +47,12 @@ export const AuthProvider = ({ children }) => {
         navigate('/dashboard')
         return true
       } else {
-        toast.error(response.message || 'Login failed')
-        return false
+        const errorMsg = response.message || 'Login failed'
+        throw new Error(errorMsg)
       }
     } catch (error) {
-      console.error('Login error:', error)
-      toast.error(error.response?.data?.message || 'Login failed')
-      return false
+      const errorMsg = error.response?.data?.message || error.message || 'Login failed'
+      throw error
     }
   }
 
@@ -66,13 +65,12 @@ export const AuthProvider = ({ children }) => {
         navigate('/login')
         return true
       } else {
-        toast.error(response.message || 'Registration failed')
-        return false
+        const errorMsg = response.message || 'Registration failed'
+        throw new Error(errorMsg)
       }
     } catch (error) {
-      console.error('Registration error:', error)
-      toast.error(error.response?.data?.message || 'Registration failed')
-      return false
+      const errorMsg = error.response?.data?.message || error.message || 'Registration failed'
+      throw error
     }
   }
 

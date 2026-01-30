@@ -8,25 +8,46 @@ import {
   Typography,
   Paper,
   CircularProgress,
+  Alert,
 } from '@mui/material'
 import { useAuth } from '../context/AuthContext'
 
 const Login = () => {
   const { login, isAuthenticated } = useAuth()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [formData, setFormData] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />
   }
 
+  const handleChange = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    await login(email, password)
-    setLoading(false)
+    
+    try {
+      await login(formData.email, formData.password)
+      setError('')
+    } catch (err) {
+      const errorMessage = err.response?.data?.message 
+        || err.message 
+        || 'Login failed. Please try again.'
+      setError(errorMessage)
+    } finally {
+      setLoading(false)
+    }
   }
+
+  const hasEmailError = error && error.toLowerCase().includes('email')
+  const hasPasswordError = error && error.toLowerCase().includes('password')
 
   return (
     <Container component="main" maxWidth="xs">
@@ -45,6 +66,13 @@ const Login = () => {
           <Typography variant="body2" align="center" color="text.secondary" gutterBottom>
             Collaborative Editing System
           </Typography>
+          
+          {error && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {error}
+            </Alert>
+          )}
+
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <TextField
               margin="normal"
@@ -55,8 +83,10 @@ const Login = () => {
               name="email"
               autoComplete="email"
               autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
+              error={!!hasEmailError}
+              helperText={hasEmailError ? error : ''}
             />
             <TextField
               margin="normal"
@@ -67,8 +97,10 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
+              error={!!hasPasswordError}
+              helperText={hasPasswordError ? error : ''}
             />
             <Button
               type="submit"
@@ -85,17 +117,6 @@ const Login = () => {
                   Don't have an account? Sign Up
                 </Typography>
               </Link>
-            </Box>
-            <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
-              <Typography variant="caption" display="block" gutterBottom>
-                <strong>Test Accounts:</strong>
-              </Typography>
-              <Typography variant="caption" display="block">
-                alice@test.com / password123
-              </Typography>
-              <Typography variant="caption" display="block">
-                bob@test.com / password123
-              </Typography>
             </Box>
           </Box>
         </Paper>

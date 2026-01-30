@@ -25,8 +25,14 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Unauthorized - clear auth and redirect to login
+    // Only handle 401 for authenticated requests (when we have a token)
+    // Don't redirect if we're already on login/register page or during login attempt
+    const isLoginAttempt = error.config?.url?.includes('/login') || error.config?.url?.includes('/register')
+    const currentPath = window.location.pathname
+    const isOnAuthPage = currentPath === '/login' || currentPath === '/register'
+    
+    if (error.response?.status === 401 && !isLoginAttempt && !isOnAuthPage) {
+      // Unauthorized - token expired or invalid, clear auth and redirect to login
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       window.location.href = '/login'

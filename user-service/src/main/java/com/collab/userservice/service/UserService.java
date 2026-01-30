@@ -59,10 +59,10 @@ public class UserService {
         log.info("Login attempt for email: {}", request.getEmail());
 
         User user = userRepository.findByEmail(request.getEmail())
-            .orElseThrow(() -> new UnauthorizedException("Invalid email or password"));
+            .orElseThrow(() -> new UnauthorizedException("No account found with this email address"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new UnauthorizedException("Invalid email or password");
+            throw new UnauthorizedException("Incorrect password. Please try again.");
         }
 
         // Generate JWT token
