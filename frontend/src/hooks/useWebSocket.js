@@ -1,3 +1,13 @@
+/**
+ * WebSocket Hook
+ * 
+ * Custom React hook for managing WebSocket connections to document collaboration.
+ * Handles automatic connection, reconnection, message broadcasting, and cleanup.
+ * Supports role-based permissions (edit/view).
+ * 
+ * @module useWebSocket
+ */
+
 import { useState, useEffect, useCallback, useRef } from 'react'
 import SockJS from 'sockjs-client'
 import { Client } from '@stomp/stompjs'
@@ -13,8 +23,8 @@ export const useWebSocket = (documentId, userId, username, onMessage, permission
     const socket = new SockJS('http://localhost:8082/ws')
     const stompClient = new Client({
       webSocketFactory: () => socket,
-      debug: (str) => {
-        console.log('[STOMP]', str)
+      debug: () => {
+        // Production: Disable STOMP debug logging
       },
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
@@ -23,13 +33,11 @@ export const useWebSocket = (documentId, userId, username, onMessage, permission
 
     // On connect
     stompClient.onConnect = () => {
-      console.log('WebSocket connected!')
       setConnected(true)
 
       // Subscribe to document topic
       stompClient.subscribe(`/topic/document/${documentId}`, (message) => {
         const data = JSON.parse(message.body)
-        console.log('Received message:', data)
         onMessage(data)
       })
 
@@ -47,7 +55,6 @@ export const useWebSocket = (documentId, userId, username, onMessage, permission
 
     // On disconnect
     stompClient.onDisconnect = () => {
-      console.log('WebSocket disconnected')
       setConnected(false)
     }
 

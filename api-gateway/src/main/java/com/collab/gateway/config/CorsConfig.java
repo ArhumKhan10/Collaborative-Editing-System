@@ -8,6 +8,16 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+/**
+ * CORS Configuration
+ * 
+ * Configures Cross-Origin Resource Sharing (CORS) for the API Gateway.
+ * Allows requests from specified frontend origins with credential support.
+ * Applies globally to all routes through the gateway.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @Configuration
 public class CorsConfig {
 

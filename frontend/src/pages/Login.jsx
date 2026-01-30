@@ -1,3 +1,13 @@
+/**
+ * Login Component
+ * 
+ * User authentication page with email and password validation.
+ * Displays specific error messages for invalid credentials.
+ * Redirects authenticated users to the dashboard.
+ * 
+ * @component
+ */
+
 import { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import {

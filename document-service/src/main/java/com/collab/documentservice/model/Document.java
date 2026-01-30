@@ -15,6 +15,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Document Entity
+ * 
+ * Represents a collaborative document in the system.
+ * Stores document content, ownership, and collaborator permissions.
+ * Supports role-based access control (owner, edit, view permissions).
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

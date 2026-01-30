@@ -14,6 +14,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Document Service
+ * 
+ * Core business logic for document management and collaboration.
+ * Handles document CRUD operations, sharing, permissions, and access control.
+ * Supports role-based permissions (owner, edit, view).
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j

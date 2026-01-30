@@ -14,6 +14,16 @@ import org.bson.types.ObjectId;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * User Service
+ * 
+ * Business logic layer for user management operations.
+ * Handles user registration, authentication, profile management, and password operations.
+ * Implements JWT-based authentication with BCrypt password hashing.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j

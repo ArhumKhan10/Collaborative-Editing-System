@@ -1,3 +1,12 @@
+/**
+ * Authentication Service
+ * 
+ * Handles all user authentication and profile management API calls.
+ * Includes login, registration, and profile operations.
+ * 
+ * @module authService
+ */
+
 import api from './api'
 
 const authService = {

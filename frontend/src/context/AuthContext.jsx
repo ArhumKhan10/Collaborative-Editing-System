@@ -1,3 +1,13 @@
+/**
+ * Authentication Context
+ * 
+ * Provides global authentication state and functions throughout the application.
+ * Manages user login, registration, logout, and token persistence.
+ * Automatically restores user session from local storage on app load.
+ * 
+ * @module AuthContext
+ */
+
 import { createContext, useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'

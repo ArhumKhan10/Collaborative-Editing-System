@@ -18,6 +18,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Version Controller
+ * 
+ * REST API endpoints for document version control and contribution tracking.
+ * Manages version snapshots, history retrieval, document reversion, and user contributions.
+ * Supports comprehensive version comparison and detailed change analytics.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @RestController
 @RequestMapping("/api/versions")
 @RequiredArgsConstructor

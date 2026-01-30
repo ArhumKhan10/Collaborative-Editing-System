@@ -1,3 +1,13 @@
+/**
+ * DocumentEditor Component
+ * 
+ * Real-time collaborative document editor with version control capabilities.
+ * Supports multiple concurrent users with role-based permissions (edit/view).
+ * Features auto-save, version history, and WebSocket-based synchronization.
+ * 
+ * @component
+ */
+
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
@@ -59,7 +69,6 @@ const DocumentEditor = () => {
 
   // WebSocket message handler
   const handleWebSocketMessage = useCallback((message) => {
-    console.log('Received WebSocket message:', message)
 
     if (message.type === 'content-change') {
       // Only update if not currently typing
@@ -191,7 +200,6 @@ const DocumentEditor = () => {
         user.userId
       )
       setLastSaved(new Date())
-      console.log('Auto-saved at', new Date().toLocaleTimeString())
     } catch (error) {
       console.error('Auto-save failed:', error)
       // Only show error if it's critical
@@ -494,12 +502,12 @@ const DocumentEditor = () => {
           <Box sx={{ display: 'flex', gap: 2 }}>
             {activeEditors.size > 0 && (
               <Typography variant="caption" color="success.main" fontWeight="bold">
-                ✏️ Editing: {Array.from(activeEditors).join(', ')}
+                Editing: {Array.from(activeEditors).join(', ')}
               </Typography>
             )}
             {activeViewers.size > 0 && (
               <Typography variant="caption" color="text.secondary">
-                👁️ Viewing: {Array.from(activeViewers).join(', ')}
+                Viewing: {Array.from(activeViewers).join(', ')}
               </Typography>
             )}
             {activeEditors.size === 0 && activeViewers.size === 0 && (

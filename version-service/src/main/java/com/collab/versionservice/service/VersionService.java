@@ -17,6 +17,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Version Service
+ * 
+ * Manages document version control and contribution tracking.
+ * Creates version snapshots, maintains version history, and supports document reversion.
+ * Tracks user contributions with detailed change statistics.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j

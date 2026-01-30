@@ -1,3 +1,13 @@
+/**
+ * API Configuration Module
+ * 
+ * Configures Axios instance with base URL and interceptors.
+ * Handles automatic JWT token injection and authentication error handling.
+ * Redirects to login on token expiration (401 errors).
+ * 
+ * @module api
+ */
+
 import axios from 'axios'
 
 const api = axios.create({

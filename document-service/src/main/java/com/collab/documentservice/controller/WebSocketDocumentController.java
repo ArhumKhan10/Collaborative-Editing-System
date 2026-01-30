@@ -9,6 +9,16 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+/**
+ * WebSocket Document Controller
+ * 
+ * Handles real-time document collaboration via WebSocket connections.
+ * Manages user join/leave events, content changes, and presence tracking.
+ * Broadcasts updates to all connected clients subscribed to a document.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @Controller
 @RequiredArgsConstructor
 @Slf4j

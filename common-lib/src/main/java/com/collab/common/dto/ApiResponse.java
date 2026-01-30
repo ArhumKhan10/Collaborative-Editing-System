@@ -6,6 +6,17 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * API Response DTO
+ * 
+ * Standardized response wrapper for all successful API operations.
+ * Provides consistent structure with success flag, message, data payload, and timestamp.
+ * Used across all microservices for uniform client responses.
+ * 
+ * @param <T> The type of data payload
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

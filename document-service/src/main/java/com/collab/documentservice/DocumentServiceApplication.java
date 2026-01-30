@@ -8,6 +8,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 
+/**
+ * Document Service Application
+ * 
+ * Entry point for the Document Editing microservice.
+ * Manages document CRUD operations, sharing, and real-time collaboration via WebSocket.
+ * Integrates with MongoDB for document persistence.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @SpringBootApplication(scanBasePackages = {"com.collab.documentservice", "com.collab.common"})
 @EnableMongoAuditing
 @OpenAPIDefinition(

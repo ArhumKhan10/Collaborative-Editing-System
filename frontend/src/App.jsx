@@ -1,3 +1,12 @@
+/**
+ * App Component
+ * 
+ * Root application component that configures routing and theme.
+ * Defines all application routes with authentication protection.
+ * 
+ * @component
+ */
+
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material'
 import Login from './pages/Login'

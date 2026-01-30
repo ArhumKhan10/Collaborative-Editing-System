@@ -15,6 +15,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
+/**
+ * User Entity
+ * 
+ * Represents a user in the collaborative editing system.
+ * Stores user credentials, profile information, and audit timestamps.
+ * Username and email fields are indexed for unique constraint enforcement.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

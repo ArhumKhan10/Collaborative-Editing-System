@@ -8,6 +8,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 
+/**
+ * User Service Application
+ * 
+ * Entry point for the User Management microservice.
+ * Handles user authentication, registration, and profile operations.
+ * Integrates with MongoDB for user data persistence.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @SpringBootApplication(scanBasePackages = {"com.collab.userservice", "com.collab.common"})
 @EnableMongoAuditing
 @OpenAPIDefinition(

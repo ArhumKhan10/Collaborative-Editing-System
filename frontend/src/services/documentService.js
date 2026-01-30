@@ -1,3 +1,12 @@
+/**
+ * Document Service
+ * 
+ * Manages all document-related API operations including CRUD operations,
+ * sharing functionality, and document access management.
+ * 
+ * @module documentService
+ */
+
 import api from './api'
 
 const documentService = {

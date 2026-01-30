@@ -17,6 +17,16 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Global Exception Handler
+ * 
+ * Centralized exception handling for the User Service.
+ * Converts application exceptions to standardized error responses.
+ * Handles validation errors, resource not found, unauthorized access, and general exceptions.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {

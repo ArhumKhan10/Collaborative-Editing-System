@@ -1,3 +1,12 @@
+/**
+ * Version Service
+ * 
+ * Manages document version control operations including creating snapshots,
+ * retrieving version history, reverting to previous versions, and tracking contributions.
+ * 
+ * @module versionService
+ */
+
 import api from './api'
 
 const versionService = {

@@ -1,3 +1,13 @@
+/**
+ * Dashboard Component
+ * 
+ * Main landing page displaying user's accessible documents.
+ * Provides functionality to create, view, and delete documents.
+ * Shows documents owned by the user and documents shared with them.
+ * 
+ * @component
+ */
+
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {

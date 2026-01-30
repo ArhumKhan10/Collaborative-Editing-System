@@ -6,6 +6,16 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+/**
+ * WebSocket Configuration
+ * 
+ * Configures WebSocket support for real-time document collaboration.
+ * Sets up STOMP messaging protocol with SockJS fallback support.
+ * Defines message broker and application destination prefixes.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {

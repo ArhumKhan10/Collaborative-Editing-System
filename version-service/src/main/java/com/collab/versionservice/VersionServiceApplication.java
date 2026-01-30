@@ -9,6 +9,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+/**
+ * Version Service Application
+ * 
+ * Entry point for the Version Control microservice.
+ * Manages document version history, reversion, and user contribution tracking.
+ * Integrates with MongoDB for version persistence.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @SpringBootApplication(scanBasePackages = {"com.collab.versionservice", "com.collab.common"})
 @EnableMongoAuditing
 @EnableScheduling

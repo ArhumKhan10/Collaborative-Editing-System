@@ -12,6 +12,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
+/**
+ * Version Entity
+ * 
+ * Represents a snapshot of a document at a specific point in time.
+ * Stores complete document content, user information, and change statistics.
+ * Used for version history, reversion, and contribution tracking.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

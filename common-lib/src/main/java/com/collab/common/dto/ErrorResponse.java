@@ -7,6 +7,16 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Error Response DTO
+ * 
+ * Standardized error response for all API exceptions and failures.
+ * Provides detailed error information including message, error code, validation details, and request path.
+ * Used by global exception handlers across all microservices.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

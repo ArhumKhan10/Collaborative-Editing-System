@@ -1,3 +1,12 @@
+/**
+ * Main Entry Point
+ * 
+ * Application entry point that initializes React, routing, and global providers.
+ * Configures authentication context and toast notifications.
+ * 
+ * @module main
+ */
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'

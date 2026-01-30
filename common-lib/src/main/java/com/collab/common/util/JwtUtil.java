@@ -14,6 +14,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * JWT Utility
+ * 
+ * Shared utility for JWT token generation, validation, and claims extraction.
+ * Implements HS256 signature algorithm with configurable secret and expiration.
+ * Used across all microservices for consistent authentication handling.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @Component
 public class JwtUtil {
 

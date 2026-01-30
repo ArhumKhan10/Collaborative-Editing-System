@@ -16,6 +16,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Document Controller
+ * 
+ * REST API endpoints for document management and collaboration.
+ * Handles document CRUD operations, sharing, and access control.
+ * Enforces permission-based authorization for all document operations.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @RestController
 @RequestMapping("/api/documents")
 @RequiredArgsConstructor

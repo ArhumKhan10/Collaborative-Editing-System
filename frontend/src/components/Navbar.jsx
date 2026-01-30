@@ -1,3 +1,12 @@
+/**
+ * Navbar Component
+ * 
+ * Application-wide navigation bar with user menu and logout functionality.
+ * Displays current user information and provides quick navigation.
+ * 
+ * @component
+ */
+
 import {
   AppBar,
   Toolbar,

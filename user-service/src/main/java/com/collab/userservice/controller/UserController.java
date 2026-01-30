@@ -13,6 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * User Controller
+ * 
+ * REST API endpoints for user authentication and profile management.
+ * Provides operations for registration, login, profile updates, and password changes.
+ * All endpoints return standardized ApiResponse objects with appropriate HTTP status codes.
+ * 
+ * @author Arhum Khan
+ * @version 1.0.0
+ */
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor

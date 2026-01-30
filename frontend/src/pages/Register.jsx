@@ -1,4 +1,14 @@
-import { useState } from 'react'
+/**
+ * Register Component
+ * 
+ * User registration page with username, email, and password fields.
+ * Validates input and displays field-specific error messages.
+ * Redirects to login page upon successful registration.
+ * 
+ * @component
+ */
+
+import { useState, useMemo } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import {
   Container,
@@ -8,25 +18,57 @@ import {
   Typography,
   Paper,
   CircularProgress,
+  Alert,
 } from '@mui/material'
 import { useAuth } from '../context/AuthContext'
 
 const Register = () => {
   const { register, isAuthenticated } = useAuth()
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [formData, setFormData] = useState({ username: '', email: '', password: '' })
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  
+  const hasUsernameError = useMemo(() => 
+    error && error.toLowerCase().includes('username'), 
+    [error]
+  )
+  
+  const hasEmailError = useMemo(() => 
+    error && error.toLowerCase().includes('email'), 
+    [error]
+  )
+  
+  const hasPasswordError = useMemo(() => 
+    error && error.toLowerCase().includes('password'), 
+    [error]
+  )
 
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />
   }
 
+  const handleChange = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    await register(username, email, password)
-    setLoading(false)
+    
+    try {
+      await register(formData.username, formData.email, formData.password)
+      setError('')
+    } catch (err) {
+      const errorMessage = err.response?.data?.message 
+        || err.message 
+        || 'Registration failed. Please try again.'
+      setError(errorMessage)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -46,6 +88,13 @@ const Register = () => {
           <Typography variant="body2" align="center" color="text.secondary" gutterBottom>
             Create a new account
           </Typography>
+          
+          {error && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {error}
+            </Alert>
+          )}
+
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <TextField
               margin="normal"
@@ -56,8 +105,10 @@ const Register = () => {
               name="username"
               autoComplete="username"
               autoFocus
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={formData.username}
+              onChange={handleChange}
+              error={!!hasUsernameError}
+              helperText={hasUsernameError ? error : ''}
             />
             <TextField
               margin="normal"
@@ -67,8 +118,10 @@ const Register = () => {
               label="Email Address"
               name="email"
               autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
+              error={!!hasEmailError}
+              helperText={hasEmailError ? error : ''}
             />
             <TextField
               margin="normal"
@@ -79,9 +132,10 @@ const Register = () => {
               type="password"
               id="password"
               autoComplete="new-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              helperText="Minimum 6 characters"
+              value={formData.password}
+              onChange={handleChange}
+              error={!!hasPasswordError}
+              helperText={hasPasswordError ? error : 'Minimum 6 characters'}
             />
             <Button
               type="submit"
