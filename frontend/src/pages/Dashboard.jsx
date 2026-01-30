@@ -26,8 +26,20 @@ import {
   TextField,
   CircularProgress,
   IconButton,
+  Chip,
+  alpha,
+  Fade,
+  Grow,
 } from '@mui/material'
-import { Add, Description, Delete } from '@mui/icons-material'
+import { 
+  Add, 
+  Description, 
+  Delete, 
+  FolderOpen,
+  Schedule,
+  Person,
+  Edit,
+} from '@mui/icons-material'
 import Navbar from '../components/Navbar'
 import { useAuth } from '../context/AuthContext'
 import documentService from '../services/documentService'
@@ -104,83 +116,301 @@ const Dashboard = () => {
     }
   }
 
+  const EmptyState = () => (
+    <Fade in timeout={800}>
+      <Box
+        sx={{
+          textAlign: 'center',
+          py: 12,
+          px: 3,
+        }}
+      >
+        <FolderOpen
+          sx={{
+            fontSize: 120,
+            color: alpha('#6366f1', 0.2),
+            mb: 3,
+          }}
+        />
+        <Typography
+          variant="h4"
+          gutterBottom
+          sx={{
+            color: 'text.secondary',
+            fontWeight: 600,
+          }}
+        >
+          No documents yet
+        </Typography>
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          sx={{ mb: 4, maxWidth: 500, mx: 'auto' }}
+        >
+          Start your collaborative journey by creating your first document
+        </Typography>
+        <Button
+          variant="contained"
+          size="large"
+          startIcon={<Add />}
+          onClick={() => setOpenDialog(true)}
+          sx={{
+            px: 4,
+            py: 1.5,
+            fontSize: '1.1rem',
+          }}
+        >
+          Create Document
+        </Button>
+      </Box>
+    </Fade>
+  )
+
   return (
-    <>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <Navbar />
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-          <Typography variant="h4">My Documents</Typography>
+      <Container maxWidth="xl" sx={{ py: 5 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: 5,
+            flexWrap: 'wrap',
+            gap: 2,
+          }}
+        >
+          <Box>
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: 800,
+                background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                mb: 1,
+              }}
+            >
+              My Documents
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              {documents.length} {documents.length === 1 ? 'document' : 'documents'} available
+            </Typography>
+          </Box>
+
           <Button
             variant="contained"
+            size="large"
             startIcon={<Add />}
             onClick={() => setOpenDialog(true)}
+            sx={{
+              px: 4,
+              py: 1.5,
+              fontSize: '1.05rem',
+              boxShadow: '0 4px 14px rgba(99, 102, 241, 0.4)',
+            }}
           >
             New Document
           </Button>
         </Box>
 
         {loading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-            <CircularProgress />
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 12 }}>
+            <CircularProgress size={60} thickness={4} />
           </Box>
         ) : documents.length === 0 ? (
-          <Box sx={{ textAlign: 'center', mt: 4 }}>
-            <Typography variant="h6" color="text.secondary">
-              No documents yet. Create your first document!
-            </Typography>
-          </Box>
+          <EmptyState />
         ) : (
           <Grid container spacing={3}>
-            {documents.map((doc) => (
-              <Grid item xs={12} sm={6} md={4} key={doc.id}>
-                <Card 
-                  sx={{ 
-                    cursor: 'pointer',
-                    '&:hover': { boxShadow: 6 }
-                  }}
-                  onClick={() => handleOpenDocument(doc.id)}
-                >
-                  <CardContent>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                      <Description sx={{ mr: 1, color: 'primary.main' }} />
-                      <Typography variant="h6" noWrap>
-                        {doc.title}
-                      </Typography>
-                    </Box>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {doc.content || 'Empty document'}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary" sx={{ mt: 1 }}>
-                      Last modified: {new Date(doc.updatedAt).toLocaleDateString()}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" onClick={(e) => {
-                      e.stopPropagation()
-                      handleOpenDocument(doc.id)
-                    }}>
-                      Open
-                    </Button>
-                    {doc.ownerId === user.userId && (
-                      <IconButton 
-                        size="small" 
-                        color="error"
-                        onClick={(e) => handleDeleteDocument(doc.id, e)}
+            {documents.map((doc, index) => (
+              <Grow
+                in
+                key={doc.id}
+                timeout={300 + index * 100}
+                style={{ transformOrigin: '0 0 0' }}
+              >
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <Card
+                    sx={{
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      cursor: 'pointer',
+                      position: 'relative',
+                      overflow: 'visible',
+                      background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+                      border: '1px solid',
+                      borderColor: alpha('#6366f1', 0.1),
+                      '&:hover': {
+                        transform: 'translateY(-8px)',
+                        boxShadow: `0 12px 40px ${alpha('#6366f1', 0.15)}`,
+                        borderColor: alpha('#6366f1', 0.3),
+                      },
+                      '&:hover .action-buttons': {
+                        opacity: 1,
+                      },
+                    }}
+                    onClick={() => handleOpenDocument(doc.id)}
+                  >
+                    <Box
+                      sx={{
+                        height: 8,
+                        background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                        borderRadius: '16px 16px 0 0',
+                      }}
+                    />
+
+                    <CardContent sx={{ flexGrow: 1, pt: 3 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}>
+                        <Box
+                          sx={{
+                            width: 48,
+                            height: 48,
+                            borderRadius: 2,
+                            background: alpha('#6366f1', 0.1),
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            mr: 2,
+                            flexShrink: 0,
+                          }}
+                        >
+                          <Description sx={{ color: '#6366f1', fontSize: 28 }} />
+                        </Box>
+                        <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                          <Typography
+                            variant="h6"
+                            sx={{
+                              fontWeight: 700,
+                              mb: 0.5,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {doc.title}
+                          </Typography>
+                          <Chip
+                            label={doc.ownerId === user.userId ? 'Owner' : 'Shared'}
+                            size="small"
+                            icon={doc.ownerId === user.userId ? <Person /> : null}
+                            sx={{
+                              height: 22,
+                              fontSize: '0.75rem',
+                              background: doc.ownerId === user.userId
+                                ? alpha('#6366f1', 0.1)
+                                : alpha('#10b981', 0.1),
+                              color: doc.ownerId === user.userId ? '#6366f1' : '#10b981',
+                              fontWeight: 600,
+                            }}
+                          />
+                        </Box>
+                      </Box>
+
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                          mb: 2,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          minHeight: '2.5em',
+                        }}
                       >
-                        <Delete />
-                      </IconButton>
-                    )}
-                  </CardActions>
-                </Card>
-              </Grid>
+                        {doc.content || 'No content yet'}
+                      </Typography>
+
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                        <Schedule sx={{ fontSize: 16, color: 'text.disabled' }} />
+                        <Typography variant="caption" color="text.secondary">
+                          {new Date(doc.updatedAt).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                          })}
+                        </Typography>
+                      </Box>
+                    </CardContent>
+
+                    <CardActions
+                      className="action-buttons"
+                      sx={{
+                        justifyContent: 'space-between',
+                        px: 2,
+                        pb: 2,
+                        opacity: 0.7,
+                        transition: 'opacity 0.2s',
+                      }}
+                    >
+                      <Button
+                        size="small"
+                        startIcon={<Edit />}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleOpenDocument(doc.id)
+                        }}
+                        sx={{
+                          color: '#6366f1',
+                          fontWeight: 600,
+                          '&:hover': {
+                            background: alpha('#6366f1', 0.1),
+                          },
+                        }}
+                      >
+                        Open
+                      </Button>
+                      {doc.ownerId === user.userId && (
+                        <IconButton
+                          size="small"
+                          onClick={(e) => handleDeleteDocument(doc.id, e)}
+                          sx={{
+                            color: '#ef4444',
+                            '&:hover': {
+                              background: alpha('#ef4444', 0.1),
+                            },
+                          }}
+                        >
+                          <Delete fontSize="small" />
+                        </IconButton>
+                      )}
+                    </CardActions>
+                  </Card>
+                </Grid>
+              </Grow>
             ))}
           </Grid>
         )}
 
         {/* Create Document Dialog */}
-        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-          <DialogTitle>Create New Document</DialogTitle>
-          <DialogContent>
+        <Dialog
+          open={openDialog}
+          onClose={() => setOpenDialog(false)}
+          maxWidth="sm"
+          fullWidth
+          PaperProps={{
+            sx: {
+              borderRadius: 3,
+              boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+            },
+          }}
+        >
+          <DialogTitle
+            sx={{
+              fontSize: '1.5rem',
+              fontWeight: 700,
+              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            Create New Document
+          </DialogTitle>
+          <DialogContent sx={{ pt: 3 }}>
             <TextField
               autoFocus
               margin="dense"
@@ -195,17 +425,39 @@ const Dashboard = () => {
                   handleCreateDocument()
                 }
               }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '&:hover fieldset': {
+                    borderColor: '#6366f1',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#6366f1',
+                    borderWidth: 2,
+                  },
+                },
+              }}
             />
           </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-            <Button onClick={handleCreateDocument} variant="contained">
+          <DialogActions sx={{ px: 3, pb: 3 }}>
+            <Button
+              onClick={() => setOpenDialog(false)}
+              sx={{ color: 'text.secondary' }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleCreateDocument}
+              variant="contained"
+              sx={{
+                px: 3,
+              }}
+            >
               Create
             </Button>
           </DialogActions>
         </Dialog>
       </Container>
-    </>
+    </Box>
   )
 }
 
