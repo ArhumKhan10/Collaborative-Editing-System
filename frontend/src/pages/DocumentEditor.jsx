@@ -74,7 +74,7 @@ const DocumentEditor = () => {
           return prev
         })
         
-        toast.info(`${message.username} updated the document`, { autoClose: 2000 })
+        // Removed toast notification for content changes (less annoying)
       }
     } else if (message.type === 'user-joined') {
       // Don't add yourself or show notification for yourself
@@ -82,10 +82,10 @@ const DocumentEditor = () => {
         const permission = message.permission || 'edit'
         if (permission === 'edit') {
           setActiveEditors(prev => new Set(prev).add(message.username))
-          toast.success(`${message.username} is editing`, { autoClose: 2000 })
+          // Removed toast - user list is enough
         } else {
           setActiveViewers(prev => new Set(prev).add(message.username))
-          toast.info(`${message.username} is viewing`, { autoClose: 2000 })
+          // Removed toast - user list is enough
         }
       }
     } else if (message.type === 'user-left') {
@@ -101,7 +101,7 @@ const DocumentEditor = () => {
           newSet.delete(message.username)
           return newSet
         })
-        toast.info(`${message.username} left the document`, { autoClose: 2000 })
+        // Removed toast - user list is enough
       }
     }
   }, [user.userId, user.username])
