@@ -2,9 +2,12 @@
  * Navbar Component
  * 
  * Application-wide navigation bar with user menu and logout functionality.
- * Displays current user information and provides quick navigation.
+ * Displays current user information, invitation badge, and provides quick navigation.
+ * Supports real-time dashboard updates when invitations are accepted.
  * 
  * @component
+ * @param {Object} props - Component props
+ * @param {Function} [props.onDocumentUpdate] - Optional callback to refresh documents when invitation accepted
  */
 
 import {
@@ -21,24 +24,69 @@ import {
   ListItemText,
   Divider,
   alpha,
+  Badge,
 } from '@mui/material'
 import { 
   AccountCircle, 
   Logout, 
   Dashboard as DashboardIcon,
   Description,
+  Mail,
 } from '@mui/icons-material'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import InvitationCenter from './InvitationCenter'
+import documentService from '../services/documentService'
 
-const Navbar = () => {
+const Navbar = ({ onDocumentUpdate }) => {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null)
+  const [invitationOpen, setInvitationOpen] = useState(false)
+  const [invitationCount, setInvitationCount] = useState(0)
+
+  useEffect(() => {
+    if (user?.email) {
+      loadInvitationCount()
+      // Refresh count every 10 seconds for more responsive notifications
+      const interval = setInterval(loadInvitationCount, 10000)
+      return () => clearInterval(interval)
+    }
+  }, [user])
+
+  const loadInvitationCount = async () => {
+    try {
+      const response = await documentService.getInvitationCount(user.email)
+      if (response.success) {
+        setInvitationCount(response.data || 0)
+      }
+    } catch (error) {
+      console.error('Failed to load invitation count:', error)
+    }
+  }
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget)
+  }
+
+  const handleInvitationClick = () => {
+    setInvitationOpen(true)
+    // Refresh count immediately when opening
+    loadInvitationCount()
+  }
+
+  const handleInvitationClose = () => {
+    setInvitationOpen(false)
+    loadInvitationCount() // Refresh count when closing
+  }
+
+  const handleInvitationAccepted = () => {
+    loadInvitationCount()
+    // Trigger dashboard refresh in real-time
+    if (onDocumentUpdate) {
+      onDocumentUpdate()
+    }
   }
 
   const handleClose = () => {
@@ -127,6 +175,30 @@ const Navbar = () => {
 
           <IconButton
             size="large"
+            onClick={handleInvitationClick}
+            sx={{
+              color: 'text.primary',
+              '&:hover': {
+                background: alpha('#6366f1', 0.1),
+              },
+            }}
+          >
+            <Badge 
+              badgeContent={invitationCount} 
+              color="error"
+              sx={{
+                '& .MuiBadge-badge': {
+                  background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                  boxShadow: '0 2px 8px rgba(239, 68, 68, 0.4)',
+                },
+              }}
+            >
+              <Mail />
+            </Badge>
+          </IconButton>
+
+          <IconButton
+            size="large"
             onClick={handleMenu}
             sx={{
               border: '2px solid',
@@ -200,6 +272,14 @@ const Navbar = () => {
               <ListItemText sx={{ color: '#ef4444' }}>Logout</ListItemText>
             </MenuItem>
           </Menu>
+
+          <InvitationCenter
+            open={invitationOpen}
+            onClose={handleInvitationClose}
+            userEmail={user?.email}
+            userId={user?.userId}
+            onInvitationAccepted={handleInvitationAccepted}
+          />
         </Box>
       </Toolbar>
     </AppBar>

@@ -70,6 +70,7 @@ public class Document {
     public static class Collaborator {
         @JsonSerialize(using = ToStringSerializer.class)
         private ObjectId userId;
+        private String email; // Added for invitation system
         private String permission; // "edit" or "view"
         private LocalDateTime addedAt;
 

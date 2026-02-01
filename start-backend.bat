@@ -26,22 +26,30 @@ echo.
 
 REM Start API Gateway
 echo Starting API Gateway on port 8080...
-start "API Gateway :8080" cmd /k "cd api-gateway && mvn spring-boot:run"
+cd api-gateway
+start "API Gateway :8080" cmd /k mvn spring-boot:run
+cd ..
 timeout /t 10 /nobreak >nul
 
 REM Start User Service
 echo Starting User Service on port 8081...
-start "User Service :8081" cmd /k "cd user-service && mvn spring-boot:run"
+cd user-service
+start "User Service :8081" cmd /k mvn spring-boot:run
+cd ..
 timeout /t 10 /nobreak >nul
 
 REM Start Document Service
 echo Starting Document Service on port 8082...
-start "Document Service :8082" cmd /k "cd document-service && mvn spring-boot:run"
+cd document-service
+start "Document Service :8082" cmd /k mvn spring-boot:run
+cd ..
 timeout /t 10 /nobreak >nul
 
 REM Start Version Service
 echo Starting Version Service on port 8083...
-start "Version Service :8083" cmd /k "cd version-service && mvn spring-boot:run"
+cd version-service
+start "Version Service :8083" cmd /k mvn spring-boot:run
+cd ..
 timeout /t 10 /nobreak >nul
 
 echo.

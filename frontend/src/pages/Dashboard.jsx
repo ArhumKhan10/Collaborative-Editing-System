@@ -175,7 +175,7 @@ const Dashboard = () => {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      <Navbar />
+      <Navbar onDocumentUpdate={loadDocuments} />
       <Container maxWidth="xl" sx={{ py: 5 }}>
         <Box
           sx={{

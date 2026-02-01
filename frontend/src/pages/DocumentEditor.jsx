@@ -330,37 +330,31 @@ const DocumentEditor = () => {
       return
     }
 
-    try {
-      // First, get the user by email
-      const userResponse = await fetch(`http://localhost:8080/api/users/exists/${encodeURIComponent(shareEmail)}`)
-      if (!userResponse.ok) {
-        toast.error('User not found with that email')
-        return
-      }
-      const userData = await userResponse.json()
-      
-      if (!userData.success) {
-        toast.error('User not found with that email')
-        return
-      }
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(shareEmail)) {
+      toast.error('Please enter a valid email address')
+      return
+    }
 
-      // Share the document
-      const response = await documentService.shareDocument(
+    try {
+      // Send invitation instead of direct sharing
+      const response = await documentService.sendInvitation(
         documentId,
-        userData.data.id,  // UserDTO has 'id', not 'userId'
-        sharePermission,
-        user.userId  // Current user's ID (backend checks if they have permission)
+        user.userId,
+        shareEmail,
+        sharePermission
       )
       
       if (response.success) {
-        toast.success(`Document shared with ${shareEmail}`)
+        toast.success(`Invitation sent to ${shareEmail}`)
         setShareDialogOpen(false)
         setShareEmail('')
         setSharePermission('edit')
       }
     } catch (error) {
-      console.error('Failed to share document:', error)
-      toast.error(error.response?.data?.message || 'Failed to share document')
+      console.error('Failed to send invitation:', error)
+      toast.error(error.response?.data?.message || 'Failed to send invitation')
     }
   }
 
@@ -553,38 +547,41 @@ const DocumentEditor = () => {
         </Box>
       </Drawer>
 
-      {/* Share Document Dialog */}
+      {/* Share Document Dialog - Send Invitation */}
       <Dialog open={shareDialogOpen} onClose={() => setShareDialogOpen(false)}>
-        <DialogTitle>Share Document</DialogTitle>
+        <DialogTitle>Invite Collaborator</DialogTitle>
         <DialogContent sx={{ minWidth: 400, pt: 2 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            Send an invitation to collaborate on this document. The recipient will need to accept before gaining access.
+          </Typography>
           <TextField
             autoFocus
             margin="dense"
-            label="User Email"
+            label="Email Address"
             type="email"
             fullWidth
             variant="outlined"
             value={shareEmail}
             onChange={(e) => setShareEmail(e.target.value)}
-            placeholder="Enter email address"
+            placeholder="colleague@example.com"
             sx={{ mb: 2 }}
           />
           <FormControl fullWidth>
-            <InputLabel>Permission</InputLabel>
+            <InputLabel>Permission Level</InputLabel>
             <Select
               value={sharePermission}
-              label="Permission"
+              label="Permission Level"
               onChange={(e) => setSharePermission(e.target.value)}
             >
-              <MenuItem value="view">View Only</MenuItem>
-              <MenuItem value="edit">Can Edit</MenuItem>
+              <MenuItem value="view">View Only - Can read but not edit</MenuItem>
+              <MenuItem value="edit">Can Edit - Full editing access</MenuItem>
             </Select>
           </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShareDialogOpen(false)}>Cancel</Button>
           <Button onClick={handleShareDocument} variant="contained">
-            Share
+            Send Invitation
           </Button>
         </DialogActions>
       </Dialog>
