@@ -113,10 +113,6 @@ npm run dev
 - Document Service Swagger: http://localhost:8082/swagger-ui.html
 - Version Service Swagger: http://localhost:8083/swagger-ui.html
 
-## Test Credentials
-
-- **User 1:** alice@test.com / password123
-- **User 2:** bob@test.com / password123
 
 ## Microservices
 
